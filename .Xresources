@@ -1,0 +1,78 @@
+
+! ^ The above lines are no comments!
+! Leave them as they are if a file ~/.extend.Xresources is being used on your system.
+! config can be added there or also here below.
+! For comments use !
+
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+!URxvt.cursorUnderline: 1
+!URxvt.cursorBlink:1
+URxvt.font: xft: Hack :size=10
+!!*fading: 40
+*fadeColor: #002b36
+*cursorColor: #93a1a1
+*pointerColorBackground: #586e75
+*pointerColorForeground: #93a1a1
+
+*background: #002b36
+*foreground: #657b83
+!!*fading: 40
+*fadeColor: #002b36
+*cursorColor: #93a1a1
+*pointerColorBackground: #586e75
+*pointerColorForeground: #93a1a1
+
+! special
+*.foreground:   #c5c8c6
+*.background:   #1d1f21
+*.cursorColor:  #c5c8c6
+
+! black
+*.color0:       #282a2e
+*.color8:       #373b41
+
+! red
+*.color1:       #df3030
+*.color9:       #db3838
+
+! green
+*.color2:       #3fdd39
+*.color10:      #6dbd68
+
+! yellow
+*.color3:       #ebc14f
+*.color11:      #f0d874
+
+! blue
+*.color4:       #5aebfc
+*.color12:      #5edeee
+
+! magenta
+*.color5:       #bf48e6
+*.color13:      #cb73ff
+
+! cyan
+*.color6:       #4dc6b6
+*.color14:      #76ffec
+
+! white
+*.color7:       #707880
+*.color15:      #c5c8c6
+
+*.scrollBar : false
+
+
+
+rofi.font: System San Francisco Display 18
+rofi.color-enabled: true
+rofi.color-window: #393939, #393939, #268bd2
+rofi.color-normal: #393939, #ffffff, #393939, #268bd2, #ffffff
+rofi.color-active: #393939, #268bd2, #393939, #268bd2, #205171
+rofi.color-urgent: #393939, #f3843d, #393939, #268bd2, #ffc39c

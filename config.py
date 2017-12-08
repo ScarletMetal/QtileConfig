@@ -87,14 +87,28 @@ def move_window(direction):
     return callback
 
 
+def close_all_window_in_group(name):
+
+    def callback(qtile):
+        windows = qtile.cmd_items(name)
+        for window in windows:
+            window.cmd_kill()
+    return callback
+
+
 # HOOKS
 
 @hook.subscribe.startup
 def starting_programs():
-    run("feh --bg-scale {}beauty/1.jpg".format(paths['wallpapers']))
+    run("feh --bg-scale {}beauty/19.jpg".format(paths['wallpapers']))
     run("synclient VertEdgeScroll=1 TapButton1=1 TapButton2=3 TapButton3=2")
-    runone("compton --config {}compton.conf".format(paths['config']))
+    run("synclient PalmDetect=1")
+    run("synclient PalmMinWidth=8")
+    run("synclient PalmMinX=100")
+    runone("compton ")
+    #--config {}compton.conf".format(paths['config']))
     runone("dropbox")
+    runone("nm-applet --no-agent")
     runone("redshift-gtk")
 
 
@@ -151,7 +165,7 @@ keys = [
     Key([win, 'shift'], "Up", lazy.function(move_window("Up"))),
     Key([win], 'l', lazy.layout.grow()),
     Key([win], 'j', lazy.layout.shrink()),
-    Key([win], 'k', lazy.layout.flip()),
+    Key([win, 'shift'], 'k', lazy.layout.flip()),
 
     # Switch window focus to other pane(s) of stack
     Key(
@@ -161,7 +175,6 @@ keys = [
 
     # Swap panes of split stack
     Key(
-        [win, 'shift'], "space",
         [win, 'shift'], "space",
         lazy.window.toggle_floating()
     ),
@@ -184,6 +197,11 @@ keys = [
     Key(
         [win, alt], 'w',
         lazy.spawn('{}WebStorm-172.3757.55/bin/webstorm.sh'.format(paths['jetbrains']))
+    ),
+
+    Key(
+        [win, alt], 'g',
+        lazy.spawn("{}Gogland-172.2696.28/bin/gogland.sh".format(paths['jetbrains']))
     ),
 
     Key(
@@ -264,7 +282,9 @@ groups = [
     Group('f', matches=[
         Match(wm_class=['VirtualBox'])
     ]),
-    Group('u'),
+    Group('u', matches=[
+        Match(wm_class=['Steam'])
+    ]),
     Group('i'),
     Group('o'),
     Group('p'),
@@ -282,14 +302,13 @@ for i in groups:
     )
 
 layouts = [
-    layout.MonadTall(),
+    layout.MonadTall(border_width=1),
     layout.Max(),
 ]
 
 widget_defaults = dict(
     font='Hack, Awesome',
-    fontsize=14,
-    background='1d1f21',
+    fontsize=13,
     padding=3,
 )
 
@@ -307,6 +326,7 @@ dgroups_app_rules = [
     Rule(Match(title=["Welcome to PyCharm"]), float=True, break_on_match=False),
     Rule(Match(title=["Welcome to IntelliJ IDEA"]), float=True, break_on_match=False),
     Rule(Match(title=["Welcome to WebStorm"]), float=True, break_on_match=False),
+    Rule(Match(title=["Welcome to CLion"]), float=True, break_on_match=False),
     Rule(Match(title=["  "]), float=True, break_on_match=False),
 ]
 
@@ -314,7 +334,12 @@ main = None
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating()
+floating_layout = layout.Floating(auto_float_types=[
+    'notification',
+    'toolbar',
+    'splash',
+    'dialog',
+])
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 extentions = []

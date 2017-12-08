@@ -11,9 +11,11 @@ keyboard_layout_widget = widget.KeyboardLayout(
 primary_screen = Screen(
         bottom=bar.Bar(
             [
-                widget.GroupBox(disable_drag=True),
+                widget.GroupBox(
+                    disable_drag=True,
+                ),
                 widget.Prompt(),
-                widget.WindowName(),
+                widget.WindowName(fontsize=12),
                 widget.Sep(),
                 widget.Backlight(
                     foreground='1d1f21',
@@ -54,6 +56,8 @@ primary_screen = Screen(
                     foreground='f4a142'
                 ),
                 widget.Sep(),
+                widget.Systray(),
+                widget.Sep(),
                 widget.BatteryIcon(
                     battery_name='BAT1',
                     
@@ -65,10 +69,9 @@ primary_screen = Screen(
                     battery_name="BAT0",
                     
                 ),
-                widget.Sep(),
-                widget.Systray(),
             ],
             27,
+            background='0F1213'
         ),
 )
 
@@ -87,7 +90,7 @@ secondary_screen = Screen(
             widget.MemoryGraph(frequency=0.5),
         ],
         27,
-        background='1d1f21'
+        background='0F1213'
     ),
 )
 
