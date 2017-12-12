@@ -100,7 +100,7 @@ def close_all_window_in_group(name):
 
 @hook.subscribe.startup
 def starting_programs():
-    run("feh --bg-scale {}beauty/19.jpg".format(paths['wallpapers']))
+    run("feh --bg-scale {}norway/norway4.jpg".format(paths['wallpapers']))
     run("synclient VertEdgeScroll=1 TapButton1=1 TapButton2=3 TapButton3=2")
     run("synclient PalmDetect=1")
     run("synclient PalmMinWidth=8")
@@ -110,6 +110,7 @@ def starting_programs():
     runone("dropbox")
     runone("nm-applet --no-agent")
     runone("redshift-gtk")
+    runone("xrdb ~/.Xresources")
 
 
 def set_screen_layout():
@@ -117,7 +118,7 @@ def set_screen_layout():
     screens = get_screen_layout(len(query_screens()))
     if len(query_screens()) == 1:
         run(home_path+'.screenlayout/l1.sh')
-    if len(query_screens()) == 2:
+    else:
         run(home_path+'.screenlayout/l2.sh')
 
 
@@ -126,7 +127,7 @@ def get_screen_layout(screen_count):
          return two_screen_layout
     elif screen_count == 1:
         return one_screen_layout
-    return []
+    return two_screen_layout
 
 
 set_screen_layout()
@@ -191,7 +192,7 @@ keys = [
 
     Key(
         [win, alt], 'i',
-        lazy.spawn('{}idea-IC-172.3317.53/bin/idea.sh'.format(paths['jetbrains']))
+        lazy.spawn('{}idea-IU-173.3727.127/bin/idea.sh'.format(paths['jetbrains']))
     ),
 
     Key(
@@ -266,15 +267,19 @@ keys = [
 groups = [
     Group('a',
           matches=[
-            Match(wm_class=["Chromium"]),
+            Match(wm_class=["Chromium", "chromium"]),
             Match(wm_class=["Firefox"]),
           ]),
     Group('s', matches=[
         Match(wm_class=["jetbrains-pycharm"]),
         Match(wm_class=["jetbrains-idea-ce"]),
+        Match(wm_class=["jetbrains-idea"]),
         Match(wm_class=["jetbrains-webstorm"]),
         Match(wm_class=["jetbrains-gogland"]),
         Match(wm_class=["jetbrains-clion"]),
+    ], layouts=[
+        layout.MonadTall(border_width=1),
+        layout.Max()
     ]),
     Group('d', matches=[
         Match(wm_class=["dosbox"])
@@ -302,7 +307,7 @@ for i in groups:
     )
 
 layouts = [
-    layout.MonadTall(border_width=1),
+    layout.MonadTall(border_width=0, margin=3),
     layout.Max(),
 ]
 

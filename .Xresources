@@ -18,20 +18,16 @@ URxvt.font: xft: Hack :size=10
 !!*fading: 40
 *fadeColor: #002b36
 *cursorColor: #93a1a1
-*pointerColorBackground: #586e75
-*pointerColorForeground: #93a1a1
 
-*background: #002b36
-*foreground: #657b83
+
 !!*fading: 40
-*fadeColor: #002b36
-*cursorColor: #93a1a1
+
 *pointerColorBackground: #586e75
 *pointerColorForeground: #93a1a1
 
 ! special
 *.foreground:   #c5c8c6
-*.background:   #1d1f21
+*.background:   #2b2b2b
 *.cursorColor:  #c5c8c6
 
 ! black
