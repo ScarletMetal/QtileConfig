@@ -48,6 +48,7 @@ primary_screen = Screen(
                 widget.Sep(),
                 widget.Clock(
                     format=' %H:%M:%S',
+                    timezone="Asia/Jerusalem",
                     foreground='#50e6a4'
                 ),
                 widget.Sep(),
@@ -70,7 +71,7 @@ primary_screen = Screen(
                     
                 ),
             ],
-            27,
+            28,
             background='0F1213'
         ),
 )
@@ -89,7 +90,7 @@ secondary_screen = Screen(
             widget.Sep(),
             widget.MemoryGraph(frequency=0.5),
         ],
-        27,
+        28,
         background='0F1213'
     ),
 )
