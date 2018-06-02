@@ -1,12 +1,10 @@
-from libqtile.config import Key, Screen, Group, Drag, Click, Match, Rule
+from libqtile.config import Key, Screen, Group, Drag, Click, Match, Rule, ScratchPad, DropDown
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from myUtils import *
 from screen_layouts import one_screen_layout, two_screen_layout, keyboard_layout_widget
+from constants import *
 
-terminal = 'urxvt'
-win = "mod4"
-alt = "mod1"
 screens = []
 
 home_path = '/home/simon/'
@@ -71,13 +69,14 @@ def close_all_window_in_group(name):
 
 @hook.subscribe.startup
 def starting_programs():
-    run("feh --bg-scale {}beauty/26.jpg".format(paths['wallpapers']))
+    run("feh --bg-scale /home/simon/Pictures/wallpapers/xyz/wallpapers/Landscapes/tree1.jpg")
     run("synclient VertEdgeScroll=1 TapButton1=1 TapButton2=3 TapButton3=2")
     run("synclient PalmDetect=1")
     run("synclient PalmMinWidth=8")
     run("synclient PalmMinX=100")
     runone("compton ")
-    runone("dropbox")
+    runone("tracker daemon --start")
+    #runone("dropbox")
     runone("nm-applet --no-agent")
     runone("redshift-gtk")
     runone("xrdb ~/.Xresources")
@@ -171,8 +170,12 @@ keys = [
         [win, alt], 'f',
         lazy.spawn('firefox')
     ),
-
-
+    Key(
+      [win, "shift"], 'v', lazy.group['scratchpad'].dropdown_toggle('term')
+    ),
+    Key(
+        [win, "shift"], 's', lazy.spawn('gnome-screenshot --interactive')
+    ),
     #XF86 buttons
 
     Key(
@@ -227,10 +230,16 @@ keys = [
 
 
 groups = [
+    ScratchPad("scratchpad", [
+        DropDown("term", "xfce4-terminal", x=0.2, y=0.2, opacity=0.95, width=0.6, height=0.6)
+    ]),
     Group('a',
           matches=[
             Match(wm_class=["Chromium", "chromium"]),
             Match(wm_class=["Firefox"]),
+          ],
+          layouts=[
+            layout.MonadTall(border_width=0, margin=3, ratio=0.65),
           ]),
     Group('s', matches=[
         Match(wm_class=["jetbrains-pycharm"]),
@@ -241,7 +250,7 @@ groups = [
         Match(wm_class=["jetbrains-clion"]),
     ]),
     Group('d', matches=[
-        Match(wm_class=["dosbox"])
+        Match(wm_class=["dosbox"]), Match(wm_class=["code - oss"])
     ]),
     Group('f', matches=[
         Match(wm_class=['VirtualBox'])
@@ -249,21 +258,26 @@ groups = [
     Group('u', matches=[
         Match(wm_class=['Steam'])
     ]),
-    Group('i'),
-    Group('o'),
+    Group('i', matches=[
+        Match(wm_class=['skype'])
+    ]),
+    Group('o', matches=[
+	Match(wm_class=['spotify'])
+    ]),
     Group('p'),
 ]
 
 for i in groups:
     # mod1 + letter of group = switch to group
-    keys.append(
-        Key([win], i.name, lazy.group[i.name].toscreen())
-    )
+    if i.name is not 'scratchpad':
+        keys.append(
+            Key([win], i.name, lazy.group[i.name].toscreen())
+        )
 
-    # mod1 + shift + letter of group = switch to & move focused window to group
-    keys.append(
-        Key([win, "shift"], i.name, lazy.window.togroup(i.name))
-    )
+        # mod1 + shift + letter of group = switch to & move focused window to group
+        keys.append(
+            Key([win, "shift"], i.name, lazy.window.togroup(i.name))
+        )
 
 layouts = [
     layout.MonadTall(border_width=0, margin=8),
@@ -286,13 +300,13 @@ mouse = [
 ]
 
 dgroups_key_binder = None
-dgroups_app_rules = [
-    Rule(Match(title=["Welcome to PyCharm"]), float=True, break_on_match=False),
-    Rule(Match(wm_class=["jetbrains-idea"]), group="s", float=False, break_on_match=False),
-    Rule(Match(title=["Welcome to IntelliJ IDEA"]), group="s", float=True, break_on_match=False),
-    Rule(Match(title=["Welcome to WebStorm"]), float=True, break_on_match=False),
-    Rule(Match(title=["Welcome to CLion"]), float=True, break_on_match=False),
-]
+#dgroups_app_rules = [
+#    Rule(Match(title=["Welcome to PyCharm"]), float=True, break_on_match=False),
+#    Rule(Match(wm_class=["jetbrains-idea"]), group="s", float=False, break_on_match=False),
+#    Rule(Match(title=["Welcome to IntelliJ IDEA"]), group="s", float=True, break_on_match=False),
+#    Rule(Match(title=["Welcome to WebStorm"]), float=True, break_on_match=False),
+#    Rule(Match(title=["Welcome to CLion"]), float=True, break_on_match=False),
+#]
 
 main = None
 follow_mouse_focus = True
