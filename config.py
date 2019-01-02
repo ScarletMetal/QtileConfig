@@ -1,10 +1,12 @@
-from libqtile.config import Key, Screen, Group, Drag, Click, Match, Rule, ScratchPad, DropDown
+from libqtile.config import Key, Screen, Group, Drag, Click, Match, Rule
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from myUtils import *
-from screen_layouts import one_screen_layout, two_screen_layout, keyboard_layout_widget
-from constants import *
+from screen_layouts import one_screen_layout,get_two_screen_layout , two_screen_layout, keyboard_layout_widget
 
+terminal = "gnome-terminal"
+win = "mod4"
+alt = "mod1"
 screens = []
 
 home_path = '/home/simon/'
@@ -67,20 +69,28 @@ def close_all_window_in_group(name):
             window.cmd_kill()
     return callback
 
+@hook.subscribe.client_new
+def screenshot(window):
+    if "gnome-screenshot" in window.window.get_wm_class():
+        window.floating = True
+
 @hook.subscribe.startup
 def starting_programs():
-    run("feh --bg-scale /home/simon/Pictures/wallpapers/xyz/wallpapers/Landscapes/tree1.jpg")
+    #run("xfce4-terminal")
+    run("feh --bg-scale '/home/simon/wallpapers/Landscapes/1490049666110.png'")
     run("synclient VertEdgeScroll=1 TapButton1=1 TapButton2=3 TapButton3=2")
     run("synclient PalmDetect=1")
     run("synclient PalmMinWidth=8")
     run("synclient PalmMinX=100")
-    runone("compton ")
+    run("compton ")
     runone("tracker daemon --start")
-    #runone("dropbox")
     runone("nm-applet --no-agent")
-    runone("redshift-gtk")
+    #runone("redshift-gtk")
     runone("xrdb ~/.Xresources")
-
+    runone('steam')
+    runone('blueman-applet')
+    runone_flatpak('com.discordapp.Discord', pname='discord')
+    runone_flatpak('com.spotify.Client', pname='spotify')
 
 def set_screen_layout():
     global screens
@@ -92,11 +102,9 @@ def set_screen_layout():
 
 
 def get_screen_layout(screen_count):
-    if screen_count == 2:
-         return two_screen_layout
-    elif screen_count == 1:
+    if screen_count == 1:
         return one_screen_layout
-    return two_screen_layout
+    return get_two_screen_layout(get_number_of_screens())
 
 
 set_screen_layout()
@@ -105,8 +113,8 @@ set_screen_layout()
 @hook.subscribe.screen_change
 def screen_change(qtile, ev):
     set_screen_layout()
-    run("killall dropobx")
-    runone("dropbox")
+    #run("killall dropobx")
+    #runone("dropbox")
     qtile.cmd_restart()
 
 
@@ -143,7 +151,7 @@ keys = [
 
     Key(
         [win], 'c',
-        lazy.spawn('chromium')
+        lazy.spawn('google-chrome-stable')
     ),
 
     Key(
@@ -174,7 +182,7 @@ keys = [
       [win, "shift"], 'v', lazy.group['scratchpad'].dropdown_toggle('term')
     ),
     Key(
-        [win, "shift"], 's', lazy.spawn('gnome-screenshot --interactive')
+        [win, alt], 's', lazy.spawn('gnome-screenshot --interactive')
     ),
     #XF86 buttons
 
@@ -214,7 +222,7 @@ keys = [
     # Unsplit = 1 window displayed, like Max layout, but still with
     # multiple stack panes
     Key(
-        [win, "shift"], "Return",
+        [win], "Return",
         lazy.function(toggle_keyboard_layout())
     ),
     Key([win], "Return", lazy.spawn(terminal)),
@@ -225,21 +233,19 @@ keys = [
 
     Key([win, "control"], "r", lazy.restart()),
     Key([win, "control"], "q", lazy.shutdown()),
-    Key([win], "r", lazy.spawn('rofi -show run')),
+    Key([win], "r", lazy.spawn('rofi -show run -theme Pop-Dark')),
 ]
 
 
 groups = [
-    ScratchPad("scratchpad", [
-        DropDown("term", "xfce4-terminal", x=0.2, y=0.2, opacity=0.95, width=0.6, height=0.6)
-    ]),
     Group('a',
           matches=[
             Match(wm_class=["Chromium", "chromium"]),
+            Match(wm_class=["google-chrome", "Google-chrome"]),
             Match(wm_class=["Firefox"]),
           ],
           layouts=[
-            layout.MonadTall(border_width=0, margin=3, ratio=0.65),
+            layout.MonadTall(border_width=1, margin=3, ratio=0.65),
           ]),
     Group('s', matches=[
         Match(wm_class=["jetbrains-pycharm"]),
@@ -259,10 +265,10 @@ groups = [
         Match(wm_class=['Steam'])
     ]),
     Group('i', matches=[
-        Match(wm_class=['skype'])
+        Match(wm_class=['discord'])
     ]),
     Group('o', matches=[
-	Match(wm_class=['spotify'])
+	Match(wm_class=['spotify', 'Spotify'])
     ]),
     Group('p'),
 ]
@@ -280,7 +286,7 @@ for i in groups:
         )
 
 layouts = [
-    layout.MonadTall(border_width=0, margin=8),
+    layout.MonadTall(border_width=1, margin=7),
     layout.Max(),
 ]
 
@@ -307,6 +313,9 @@ dgroups_key_binder = None
 #    Rule(Match(title=["Welcome to WebStorm"]), float=True, break_on_match=False),
 #    Rule(Match(title=["Welcome to CLion"]), float=True, break_on_match=False),
 #]
+dgroups_app_rules = [
+    Rule(Match(wm_class=["sun-awt-X11-XWindowPeer"]), float=True)
+]
 
 main = None
 follow_mouse_focus = True

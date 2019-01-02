@@ -34,26 +34,22 @@ primary_screen = Screen(
                 widget.Pacman(),
                 widget.TextBox(text="Updates Available"),
                 widget.Sep(),
-                widget.Wlan(
-                    foreground='42bcf4',
-                    interface='wlp3s0',
-                    format=' {essid} {quality}/70'
-                ),
-                widget.Sep(),
                 widget.TextBox(
                     text='',
                     foreground='f44165'
                 ),
                 keyboard_layout_widget,
                 widget.Sep(),
+                widget.TextBox(text="", foreground="50e6a4"),
                 widget.Clock(
-                    format=' %H:%M:%S',
+                    format='%H:%M:%S',
                     timezone="Asia/Jerusalem",
                     foreground='#50e6a4'
                 ),
                 widget.Sep(),
+                widget.TextBox(text="", foreground="f4a142"),
                 widget.Clock(
-                    format=' %d/%m/%Y',
+                    format='%d/%m/%Y',
                     foreground='f4a142'
                 ),
                 widget.Sep(),
@@ -100,6 +96,11 @@ one_screen_layout = [
 ]
 
 two_screen_layout = [
-    primary_screen,
-    secondary_screen
+    secondary_screen, primary_screen
 ]
+
+def get_two_screen_layout(n_of_screens):
+    if n_of_screens > 1:
+        return [secondary_screen, primary_screen]
+    else:
+        return [primary_screen, secondary_screen]

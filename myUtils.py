@@ -8,11 +8,28 @@ def query_screens():
     return [l.split()[0] for l in output if " connected " in l]
 
 
+def get_number_of_screens():
+    output = [l for l in subprocess.check_output(["xrandr"]).decode("utf-8").splitlines()][0]
+    output = output.split(",")
+    output = output[1].split(' ')
+    output =  int(output[2])
+    if output < 2000:
+        return 1
+    else :
+        return 2
 def runone(cmdline):
     """Check if another instance of an app is running, otherwise start a new one."""
     cmd = shlex.split(cmdline)
     try:
         subprocess.check_call(['pgrep', cmd[0]])
+    except:
+        run(cmdline)
+
+def runone_flatpak(cmdline, pname):
+
+    cmd = shlex.split(cmdline)
+    try:
+        subprocess.check_call(['pgrep', pname])
     except:
         run(cmdline)
 
@@ -46,3 +63,5 @@ def is_chromium(window):
         if wm_class == 'chromium' or wm_class == 'Chromium':
             return True
     return False
+
+print(get_number_of_screens())
