@@ -272,7 +272,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font='Hack',
+    font='Roboto Mono',
     fontsize=13,
     padding=2,
 )
