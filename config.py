@@ -2,20 +2,12 @@ from libqtile.config import Key, Screen, Group, Drag, Click, Match, Rule, Scratc
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from myUtils import *
+from constants import *
 from screen_layouts import one_screen_layout, get_two_screen_layout, two_screen_layout, keyboard_layout_widget
 
-terminal = "mate-terminal"
-browser = "chromium"
 win = "mod4"
 alt = "mod1"
 screens = []
-wallpaper_path = "/home/simon/wallpapers/Landscapes/landscape_54.jpg"
-home_path = '/home/simon/'
-paths = {
-    'config': '{}.config/'.format(home_path),
-    'jetbrains': '{}.local/opt/jetbrains/'.format(home_path),
-    'wallpapers': '{}/Pictures/wallpapers/'.format(home_path)
-}
 
 
 def toggle_keyboard_layout():
@@ -84,8 +76,7 @@ def system_initialization():
 @hook.subscribe.startup
 def startup_programms():
     runone('steam')
-    # runone('/home/simon/Downloads/ides/jetbrains-toolbox')
-    runone_flatpak('com.discordapp.Discord', pname='discord')
+    runone('discord')
     runone_flatpak('com.spotify.Client', pname='spotify')
 
 
@@ -208,7 +199,8 @@ keys = [
 
     Key([win, "control"], "r", lazy.restart()),
     Key([win, "control"], "q", lazy.shutdown()),
-    Key([win], "r", lazy.spawn('rofi -show run -theme Pop-Dark')),
+    Key([win, alt], "r", lazy.spawn('rofi -show window -theme {}'.format(rofi_theme))),
+    Key([win], "r", lazy.spawn('rofi -show run -theme {}'.format(rofi_theme))),
 ]
 
 groups = [
