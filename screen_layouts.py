@@ -101,6 +101,6 @@ two_screen_layout = [
 
 def get_two_screen_layout(screen_names):
     if screen_names[0] == "eDP1":
-        return [primary_screen, secondary_screen]
+        return [secondary_screen, primary_screen]
     else:
-        return [primary_screen, secondary_screen]
+        return [secondary_screen, primary_screen]
