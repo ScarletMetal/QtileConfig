@@ -9,67 +9,66 @@ keyboard_layout_widget = widget.KeyboardLayout(
 )
 
 primary_screen = Screen(
-        bottom=bar.Bar(
-            [
-                widget.GroupBox(
-                    disable_drag=True,
-                ),
-                widget.Prompt(),
-                widget.WindowName(fontsize=12),
-                widget.Sep(),
-                widget.Backlight(
-                    foreground='1d1f21',
-                    initial_background='f1ce4f',
-                    background='f1ce4f',
-                    backlight_name="intel_backlight",
-                    brightness_file='brightness',
-                    update_interval=0.1,
-                    format='{percent: 2.0%} '
-                ),
-                widget.Sep(),
-                widget.Volume(emoji=False),
-                widget.Volume(emoji=True),
-                widget.Sep(),
-                widget.TextBox(text=""),
-                widget.Pacman(),
-                widget.TextBox(text="Updates Available"),
-                widget.Sep(),
-                widget.TextBox(
-                    text='',
-                    foreground='f44165'
-                ),
-                keyboard_layout_widget,
-                widget.Sep(),
-                widget.TextBox(text="", foreground="50e6a4"),
-                widget.Clock(
-                    format='%H:%M:%S',
-                    timezone="Asia/Jerusalem",
-                    foreground='#50e6a4'
-                ),
-                widget.Sep(),
-                widget.TextBox(text="", foreground="f4a142"),
-                widget.Clock(
-                    format='%d/%m/%Y',
-                    foreground='f4a142'
-                ),
-                widget.Sep(),
-                widget.Systray(),
-                widget.Sep(),
-                widget.BatteryIcon(
-                    battery_name='BAT1',
-                    
-                   
-                ),
+    bottom=bar.Bar(
+        [
+            widget.GroupBox(
+                disable_drag=True,
+            ),
+            widget.Prompt(),
+            widget.WindowName(fontsize=12),
+            widget.Sep(),
+            widget.Backlight(
+                foreground='1d1f21',
+                initial_background='f1ce4f',
+                background='f1ce4f',
+                backlight_name="intel_backlight",
+                brightness_file='brightness',
+                update_interval=0.1,
+                format='{percent: 2.0%} '
+            ),
+            widget.Sep(),
+            widget.Volume(emoji=False),
+            widget.Volume(emoji=True),
+            widget.Sep(),
+            widget.TextBox(text=""),
+            widget.Pacman(),
+            widget.TextBox(text="Updates Available"),
+            widget.Sep(),
+            widget.TextBox(
+                text='',
+                foreground='f44165'
+            ),
+            keyboard_layout_widget,
+            widget.Sep(),
+            widget.TextBox(text="", foreground="50e6a4"),
+            widget.Clock(
+                format='%H:%M:%S',
+                timezone="Asia/Jerusalem",
+                foreground='#50e6a4'
+            ),
+            widget.Sep(),
+            widget.TextBox(text="", foreground="f4a142"),
+            widget.Clock(
+                format='%d/%m/%Y',
+                foreground='f4a142'
+            ),
+            widget.Sep(),
+            widget.Systray(),
+            widget.Sep(),
+            widget.BatteryIcon(
+                battery_name='BAT1',
 
-                widget.Sep(text="|"),
-                widget.BatteryIcon(
-                    battery_name="BAT0",
-                    
-                ),
-            ],
-            28,
-            background='0F1213'
-        ),
+            ),
+
+            widget.Sep(text="|"),
+            widget.BatteryIcon(
+                battery_name="BAT0",
+
+            ),
+        ],
+        28,
+        background='0F1213'
+    ),
 )
 
 secondary_screen = Screen(
@@ -99,8 +98,9 @@ two_screen_layout = [
     secondary_screen, primary_screen
 ]
 
-def get_two_screen_layout(n_of_screens):
-    if n_of_screens > 1:
-        return [secondary_screen, primary_screen]
+
+def get_two_screen_layout(screen_names):
+    if screen_names[0] == "eDP1":
+        return [primary_screen, secondary_screen]
     else:
         return [primary_screen, secondary_screen]
